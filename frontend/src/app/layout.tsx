@@ -29,7 +29,7 @@ export default function RootLayout({
                 className={`${geistSans.variable} ${geistMono.variable} antialiased flex`}
             >
                 <TopNavbar />
-                <section className="mt-16">
+                <section className="mt-16 w-full">
                     {children}
                 </section>
             </body>

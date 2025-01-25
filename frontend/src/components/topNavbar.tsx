@@ -25,10 +25,10 @@ export default function TopNavbar() {
                     </div>
                     <SearchComp />
                     <div className="flex items-center gap-4">
-                        <Button variant="outline" size="sm">
+                        <Button variant="main" size="sm">
                             Sign in
                         </Button>
-                        <Button size="sm">Sign up</Button>
+                        <Button variant="outline" size="sm">Sign up</Button>
                     </div>
                 </div>
             </div>
