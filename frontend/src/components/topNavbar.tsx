@@ -11,13 +11,13 @@ export default function TopNavbar() {
             <div className="w-full mx-auto px-10">
                 <div className="flex justify-between h-16 items">
                     <div className="flex gap-4">
-                        <Link href="#" className="flex items-center" prefetch={false}>
+                        <Link href="/" className="flex items-center" prefetch={false}>
                             <img src="/images/icon.png" alt="icon" className="h-10 w-auto" />
                         </Link>
                         <Link
-                            href="#"
+                            href="/"
                             className="font-medium flex items-center text-xl italic tra
-                            nsition-colors hover:underline"
+                            nsition-colors"
                             prefetch={false}
                         >
                             Funells
@@ -25,10 +25,14 @@ export default function TopNavbar() {
                     </div>
                     <SearchComp />
                     <div className="flex items-center gap-4">
-                        <Button variant="main" size="sm">
-                            Sign in
-                        </Button>
-                        <Button variant="outline" size="sm">Sign up</Button>
+                        <Link href="/auth?form=sign-in" prefetch={false}>
+                            <Button variant="main" size="sm">
+                                Sign in
+                            </Button>
+                        </Link>
+                        <Link href="/auth?form=sign-up" prefetch={false}>
+                            <Button variant="outline" size="sm">Sign up</Button>
+                        </Link>
                     </div>
                 </div>
             </div>

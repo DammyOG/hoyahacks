@@ -1,31 +1,41 @@
-'use client'
+'use client';
 
-import LoginForm from '@/components/signinForm'
-import SignupForm from '@/components/signupForm'
-import React from 'react'
+import LoginForm from '@/components/signinForm';
+import SignupForm from '@/components/signupForm';
+import React, { useEffect } from 'react';
+import { useSearchParams } from 'next/navigation'; // For reading query params
 
 enum FormType {
-    LOGIN = 'login',
-    SIGNUP = 'signup'
+    SIGNIN = 'sign-in',
+    SIGNUP = 'sign-up',
 }
 
-const page = () => {
-    const [formType, setFormType] = React.useState<FormType>(FormType.SIGNUP)
+const Page = () => {
+    const searchParams = useSearchParams();
+    const formParam = searchParams.get('form'); // Get the "form" query param
+    const [formType, setFormType] = React.useState<FormType>(FormType.SIGNIN);
+
+    useEffect(() => {
+        if (formParam === FormType.SIGNUP) {
+            setFormType(FormType.SIGNUP);
+        } else {
+            setFormType(FormType.SIGNIN);
+        }
+    }, [formParam]);
 
     const handleFormType = (type: FormType) => {
-        setFormType(type)
-    }
+        setFormType(type);
+    };
 
     return (
         <div>
-            {FormType.LOGIN === formType ? (
+            {formType === FormType.SIGNIN ? (
                 <LoginForm handleClick={() => handleFormType(FormType.SIGNUP)} />
             ) : (
-                <SignupForm handleClick={() => handleFormType(FormType.LOGIN)} />
+                <SignupForm handleClick={() => handleFormType(FormType.SIGNIN)} />
             )}
         </div>
-    )
-}
+    );
+};
 
-export default page
-
+export default Page;

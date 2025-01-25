@@ -3,7 +3,7 @@ import { Button } from './ui/button'
 
 const HeroComp = () => {
     return (
-        <div className='w-full h-48  bg-gradient-to-br from-[#4a42a3] to-[#1a0261] flex flex-col items-center justify-center text-white gap-4'>
+        <div className='w-full h-48  bg-gradient-to-br from-[#4a42a33f] to-[#1a026182] flex flex-col items-center justify-center text-white gap-4'>
             <h1 className='text-3xl'>HOYA HACKS 2025</h1>
             <p>Submit your Hoya hack
                 projects with mini-tutorials to
