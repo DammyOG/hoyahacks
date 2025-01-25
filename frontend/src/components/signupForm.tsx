@@ -60,17 +60,17 @@ const SignupForm: React.FC<SignupFormProps> = ({ handleClick }) => {
     const onSubmit = (data: any) => {
         console.log(data)
     }
-// bg-gradient-to-r from-[#ff7f50] to-[#6a5acd]
+    // bg-gradient-to-r from-[#ff7f50] to-[#6a5acd]
     return (
-        <div className = 'relative h-lvh bg-[#001337] flex justify-center items-center'>
-            
+        <div className='relative h-lvh bg-[#001337] flex justify-center items-center'>
+
             {/* <div className="relative h-screen w-full bg-[#000e4f]"> */}
-                {/* Pink Circle */}
-                <div className="absolute w-80 h-80 rounded-full bg-gradient-to-br from-[#FF0051] to-[#3C003D] top-1/4 left-1/4 mix-blend-screen z-30"></div>
-                {/*Orange Circle*/}
-                <div className="absolute w-80 h-80 rounded-full bg-gradient-to-br from-[#FF2600] to-[#FFFF00] top-1/3 right-1/4 mix-blend-screen z-20"></div>
-                {/*Circle*/}
-                <div className="absolute w-80 h-80 rounded-full bg-gradient-to-br from-[#00eaff] to-[#33007A] top-1/2 left-1/3 mix-blend-screen z-10"></div>
+            {/* Pink Circle */}
+            <div className="absolute w-80 h-80 rounded-full bg-gradient-to-br from-[#FF0051] to-[#3C003D] top-1/4 left-1/4 mix-blend-screen z-30"></div>
+            {/*Orange Circle*/}
+            <div className="absolute w-80 h-80 rounded-full bg-gradient-to-br from-[#FF2600] to-[#FFFF00] top-1/3 right-1/4 mix-blend-screen z-20"></div>
+            {/*Circle*/}
+            <div className="absolute w-80 h-80 rounded-full bg-gradient-to-br from-[#00eaff] to-[#33007A] top-1/2 left-1/3 mix-blend-screen z-10"></div>
             {/* </div> */}
 
             {/* <div className='z-40'> */}
