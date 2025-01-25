@@ -1,76 +1,52 @@
-import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
+import { PutObjectCommand } from "@aws-sdk/client-s3";
 import multer from "multer";
-import { NextApiRequest, NextApiResponse } from "next";
+import { Router, Request, Response } from 'express';
+import { s3Client } from '../../config/aws';
 
-// Type for our enhanced request including files
-interface MulterRequest extends NextApiRequest {
-    files: Express.Multer.File[];
-}
+const router = Router();
 
-const s3 = new S3Client({
-    region: process.env.AWS_REGION,
-    credentials: {
-        accessKeyId: process.env.AWS_ACCESS_KEY_ID!,
-        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY!, // Fixed typo in ACCESS
-    }
-});
-
-// Create multer middleware
+// Configure multer for handling multiple files
 const upload = multer({ storage: multer.memoryStorage() });
 
-// Promisify multer middleware
-const runMiddleware = (req: NextApiRequest, res: NextApiResponse, fn: any) => {
-    return new Promise((resolve, reject) => {
-        fn(req, res, (result: any) => {
-            if (result instanceof Error) {
-                return reject(result);
-            }
-            return resolve(result);
-        });
-    });
-};
-
-async function handler(
-    req: NextApiRequest,
-    res: NextApiResponse
-) {
-    if (req.method !== 'POST') {
-        return res.status(405).json({ error: 'Method not allowed' });
-    }
-
-    try {
-        // Run multer
-        await runMiddleware(req, res, upload.array('files'));
-        
-        const typedReq = req as MulterRequest;
-        const files = typedReq.files;
-        const folderName = req.body?.folder || "uploads";
-
-        await Promise.all(
-            files.map(async (file) => {
-                const params = {
-                    Bucket: process.env.AWS_BUCKET_NAME!,
-                    Key: `${folderName}/${file.originalname}`,
-                    Body: file.buffer,
-                    ContentType: file.mimetype,
-                };
-
-                await s3.send(new PutObjectCommand(params));
-            })
-        );
-
-        return res.status(200).json({ message: "Files uploaded successfully" });
-
-    } catch (error) {
-        console.error("Error uploading files:", error);
-        return res.status(500).json({ error: "Upload failed" });
-    }
+// Define interface for typed request
+interface MulterRequest extends Request {
+  files: Express.Multer.File[];
 }
 
-export const config = {
-    api: {
-        bodyParser: false, // Multer handles the multipart data
-    },
-};
+router.post('/', upload.array('files'), (req: Request, res: Response) => {
+    const files = (req as any).files as Express.Multer.File[];
+    
+    if (!files || !Array.isArray(files)) {
+        res.status(400).json({ error: 'No files uploaded' });
+        return;
+    }
 
-export default handler;
+    const uploadPromises = files.map(async (file) => {
+        // Get the file path from the original name (includes folder structure)
+        const key = file.originalname;
+
+        const params = {
+            Bucket: process.env.AWS_BUCKET_NAME!,
+            Key: key,
+            Body: file.buffer,
+            ContentType: file.mimetype,
+        };
+
+        try {
+            await s3Client.send(new PutObjectCommand(params));
+            return { filename: key, status: 'success' };
+        } catch (error) {
+            console.error(`Error uploading ${key}:`, error);
+            return { filename: key, status: 'error', error };
+        }
+    });
+
+    Promise.all(uploadPromises)
+        .then(results => res.json({ message: 'Upload complete', results }))
+        .catch(error => {
+            console.error('Upload error:', error);
+            res.status(500).json({ error: 'Upload failed' });
+        });
+});
+
+export default router;

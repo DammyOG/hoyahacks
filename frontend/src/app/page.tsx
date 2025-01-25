@@ -1,15 +1,19 @@
 "use client";
-import SignupForm from "@/components/signupForm";
+
+import React from "react";
+import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
+
 
 export default function Home() {
-    const handleClick = () => {
-      console.log("Clicked");
-    }
-
+  // usePathname lets us know which route is currently active
+  const pathname = usePathname();
+  
   return (
-    <>
-    <SignupForm handleClick= {handleClick}/>
-    </>
+    <main>
+      {/* Since we're on the home route, we can directly render the Homepage component */}
+
+    </main>
   );
 }
