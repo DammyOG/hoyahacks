@@ -41,8 +41,6 @@ const signupSchema = z.object({
     }
 })
 
-
-
 interface SignupFormProps {
     handleClick: () => void;
 }

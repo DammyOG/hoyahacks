@@ -16,7 +16,6 @@ const page = () => {
         setFormType(type)
     }
 
-
     return (
         <div className='flex justify-center items-center h-screen'>
             {FormType.LOGIN === formType ? (
@@ -25,7 +24,6 @@ const page = () => {
                 <SignupForm handleClick={() => handleFormType(FormType.LOGIN)} />
             )}
         </div>
-
     )
 }
 
