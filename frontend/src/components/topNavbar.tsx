@@ -7,9 +7,9 @@ import Image from "next/image"
 
 export default function TopNavbar() {
     return (
-        <nav className="fixed inset-x-0 top-0 z-50 bg-white shadow-sm dark:bg-gray-950/90 ">
+        <nav className="fixed inset-x-0 top-0 z-50 h-16 bg-white shadow-sm dark:bg-gray-950/90 ">
             <div className="w-full mx-auto px-10">
-                <div className="flex justify-between h-14 items">
+                <div className="flex justify-between h-16 items">
                     <div className="flex gap-4">
                         <Link href="#" className="flex items-center" prefetch={false}>
                             <img src="/images/icon.png" alt="icon" className="h-10 w-auto" />

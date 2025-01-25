@@ -26,10 +26,12 @@ export default function RootLayout({
     return (
         <html lang="en">
             <body
-                className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+                className={`${geistSans.variable} ${geistMono.variable} antialiased flex`}
             >
                 <TopNavbar />
-                {children}
+                <section className="mt-16">
+                    {children}
+                </section>
             </body>
         </html>
     );
