@@ -17,7 +17,7 @@ const page = () => {
     }
 
     return (
-        <div className='flex justify-center items-center h-screen'>
+        <div className='flex justify-center items-center h-full w-full'>
             {FormType.LOGIN === formType ? (
                 <LoginForm handleClick={() => handleFormType(FormType.SIGNUP)} />
             ) : (
