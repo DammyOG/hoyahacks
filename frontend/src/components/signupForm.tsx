@@ -76,7 +76,7 @@ const SignupForm: React.FC<SignupFormProps> = ({ handleClick }) => {
             {/* <div className='z-40'> */}
             <Card className='absolute flex flex-col justify-center items-center backdrop-blur-md bg-white/40 stroke-white gap-4 w-2/3 md:w-2/5 lg:w-96 z-40'>
                 <CardHeader className='pb-2 '>
-                    <CardTitle className='text-2xl text-white '>Sign-up</CardTitle>
+                    <CardTitle className='text-2xl'>Sign-up</CardTitle>
                 </CardHeader>
                 <CardContent>
                     <Form {...form}>
@@ -86,7 +86,7 @@ const SignupForm: React.FC<SignupFormProps> = ({ handleClick }) => {
                                 name="firstname"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel className=''>Firstname</FormLabel>
+                                        <FormLabel >Firstname</FormLabel>
                                         <FormControl>
                                             <Input placeholder="firstname" {...field} />
                                         </FormControl>
@@ -102,7 +102,7 @@ const SignupForm: React.FC<SignupFormProps> = ({ handleClick }) => {
                                 name="lastname"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel className=''>Lastname</FormLabel>
+                                        <FormLabel>Lastname</FormLabel>
                                         <FormControl>
                                             <Input placeholder="lastname" {...field} />
                                         </FormControl>
@@ -119,7 +119,7 @@ const SignupForm: React.FC<SignupFormProps> = ({ handleClick }) => {
                                 name="email"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel className=''>Email</FormLabel>
+                                        <FormLabel>Email</FormLabel>
                                         <FormControl>
                                             <Input placeholder="email" {...field} />
                                         </FormControl>
@@ -136,7 +136,7 @@ const SignupForm: React.FC<SignupFormProps> = ({ handleClick }) => {
                                 name="password"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel className=''>Password</FormLabel>
+                                        <FormLabel>Password</FormLabel>
                                         <FormControl>
                                             <Input type="password" placeholder="********" {...field} />
                                         </FormControl>
@@ -153,7 +153,7 @@ const SignupForm: React.FC<SignupFormProps> = ({ handleClick }) => {
                                 name="confirmPassword"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel className='font-medium'>Confirm Password</FormLabel>
+                                        <FormLabel>Confirm Password</FormLabel>
                                         <FormControl>
                                             <Input type="password" placeholder="********" {...field} />
                                         </FormControl>

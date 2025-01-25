@@ -10,14 +10,14 @@ enum FormType {
 }
 
 const page = () => {
-    const [formType, setFormType] = React.useState<FormType>(FormType.LOGIN)
+    const [formType, setFormType] = React.useState<FormType>(FormType.SIGNUP)
 
     const handleFormType = (type: FormType) => {
         setFormType(type)
     }
 
     return (
-        <div className='flex justify-center items-center h-full w-full'>
+        <div>
             {FormType.LOGIN === formType ? (
                 <LoginForm handleClick={() => handleFormType(FormType.SIGNUP)} />
             ) : (
@@ -28,3 +28,4 @@ const page = () => {
 }
 
 export default page
+
