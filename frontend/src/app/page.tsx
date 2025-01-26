@@ -2,7 +2,7 @@
 import Home from "./home/page";
 
 const page = () => {
-    return <Home />;
+  return <Home />;
 };
 
 export default page;

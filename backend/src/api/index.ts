@@ -4,12 +4,17 @@ import cors from 'cors';
 import { s3Client } from '../../config/aws';
 import { PutObjectCommand } from '@aws-sdk/client-s3';
 import { randomUUID } from 'crypto';
+import uploadRouter from './upload';
+import usersRouter from './users';
 
 const app = express();
 const upload = multer({ storage: multer.memoryStorage() });
 
 app.use(cors());
 app.use(express.json());
+
+app.use('/upload', uploadRouter);
+app.use('/api/users', usersRouter);
 
 app.post("/upload", upload.array("files"), async (req: Request, res: Response) => {
   try {
