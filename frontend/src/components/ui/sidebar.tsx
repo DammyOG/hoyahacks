@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, MessageCircle, ChevronRight } from 'lucide-react';
+import { Home, MessageCircle, ChevronRight, Goal } from 'lucide-react';
 
 const Sidebar = () => {
     const [isExpanded, setIsExpanded] = useState(false);
@@ -32,7 +32,8 @@ const Sidebar = () => {
 
     const navItems = [
         { name: 'Home', icon: Home, path: '/' },
-        { name: 'Discussions', icon: MessageCircle, path: '/discussions' }
+        { name: 'Discussions', icon: MessageCircle, path: '/discussions' },
+        { name: 'Projects', icon: Goal, path: '/uploadtest' },
     ];
 
     return (
