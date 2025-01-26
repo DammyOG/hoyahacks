@@ -7,16 +7,16 @@ const Spotlight = () => {
             title: 'Spotlight',
             cards: [
                 { title: 'King', content: 'Hola', img: '/images/icon.png' },
-                { title: 'Queen', content: 'Hello', img: '/images/image.png' },
-                { title: 'Prince', content: 'Hi', img: '/images/icon.png' },
-                { title: 'Princess', content: 'Hey', img: '/images/image.png' },
+                { title: 'Queen', content: 'This project does things. Things are important. Things inspire.', img: '/images/image.png' },
+                { title: 'Prince', content: 'Hi', img: '/images/tech.png' },
+                { title: 'Princess', content: 'This project does things. Things are important. Things inspire.', img: '/images/image.png' },
             ],
         },
         {
             title: 'Mobile App Development',
             cards: [
-                { title: 'App1', content: 'Mobile Dev', img: '/images/icon.png' },
-                { title: 'App2', content: 'Mobile Dev', img: '/images/image.png' },
+                { title: 'App1', content: 'This project does things. Things are important. Things inspire.', img: '/images/icon.png' },
+                { title: 'App2', content: 'Mobile Dev', img: '/images/tech.png' },
                 { title: 'App3', content: 'Mobile Dev', img: '/images/icon.png' },
             ],
         },

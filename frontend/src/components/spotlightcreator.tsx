@@ -21,8 +21,8 @@ const SpotlightCreator: React.FC<SpotlightProps> = ({ categories }) => {
         <div className='w-full xl:w-3/5 flex flex-col gap-4 ml-4 text-white'>
             {categories.map((category, index) => (
                 <div key={index} className='space-y-4'>
-                    <CardTitle>{category.title}</CardTitle>
-                    <div className='flex gap-3 overflow-x-auto hide-scrollbar'>
+                    <CardTitle className='pt-10'>{category.title}</CardTitle>
+                    <div className='flex gap-4 overflow-x-auto hide-scrollbar'>
                         {category.cards.map((card, idx) => (
                             <HomeCard
                                 key={idx}
