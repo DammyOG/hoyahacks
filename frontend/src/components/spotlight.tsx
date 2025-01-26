@@ -8,7 +8,7 @@ const Spotlight = () => {
             cards: [
                 { title: 'King', content: 'Hola', img: '/images/icon.png' },
                 { title: 'Queen', content: 'This project does things. Things are important. Things inspire.', img: '/images/image.png' },
-                { title: 'Prince', content: 'Hi', img: '/images/tech.png' },
+                { title: 'Prince', content: 'Hi', img: '/images/tech.jpeg' },
                 { title: 'Princess', content: 'This project does things. Things are important. Things inspire.', img: '/images/image.png' },
             ],
         },
@@ -16,7 +16,7 @@ const Spotlight = () => {
             title: 'Mobile App Development',
             cards: [
                 { title: 'App1', content: 'This project does things. Things are important. Things inspire.', img: '/images/icon.png' },
-                { title: 'App2', content: 'Mobile Dev', img: '/images/tech.png' },
+                { title: 'App2', content: 'Mobile Dev', img: '/images/tech.jpeg' },
                 { title: 'App3', content: 'Mobile Dev', img: '/images/icon.png' },
             ],
         },
