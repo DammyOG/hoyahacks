@@ -189,6 +189,7 @@ export async function uploadFile(file: File, email: string) {
   try {
     const formData = new FormData();
     formData.append('file', file);
+    formData.append('relativePath', file.webkitRelativePath);
 
     const response = await fetch(`http://localhost:5000/api/users/upload/${email}`, {
       method: 'POST',
@@ -202,6 +203,28 @@ export async function uploadFile(file: File, email: string) {
     return await response.json();
   } catch (error) {
     console.error('Error uploading file:', error);
+    throw error;
+  }
+}
+
+export async function uploadProjectPicture(file: File, email: string, projectName: string) {
+  try {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('projectName', projectName);
+
+    const response = await fetch(`http://localhost:5000/api/users/upload-project-picture/${email}`, {
+      method: 'POST',
+      body: formData,
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to upload project picture');
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error('Error uploading project picture:', error);
     throw error;
   }
 }

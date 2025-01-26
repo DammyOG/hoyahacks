@@ -2,6 +2,7 @@
 import React from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const Profile = () => {
   const router = useRouter();
@@ -48,6 +49,11 @@ const Profile = () => {
           <div className="py-2 px-4 hover:bg-gray-200 cursor-pointer">
             {email}
           </div>
+          <Link href="/projects">
+            <div className="py-2 px-4 hover:bg-gray-200 cursor-pointer">
+              My Projects
+            </div>
+          </Link>
           <div
             className="py-2 px-4 hover:bg-gray-200 cursor-pointer text-red-600"
             onClick={handleSignOut}

@@ -12,29 +12,29 @@ declare global {
   }
 }
 export interface User {
-   _id:ObjectId;
-   name: string;
-   email:string;
-   password:string;
-   profilePic?: string;
-   major?: string;
-   bio?:string;
-   skills: string[];
-   resume?: string;
-   createdAt: Date;
-   updatedAt: Date;
+  _id?: ObjectId;
+  name: string;
+  email: string;
+  skills: string[];
+  s3FolderPath: string;
+  projects: ObjectId[]; // Change to ObjectId[]
+  createdAt: Date;
+  updatedAt: Date;
 }
 
-export interface Project{
-   _id: ObjectId;
-   title: string;
-   description: string;
-   ownerId: ObjectId;
-   teamMembers: ObjectId[];
-   tags:string;
-   files: {fileName: string; fileUrl: string}[];
-   likes: number;
-   createdAt: Date;
+export interface Project {
+  _id?: string;
+  userId: string;
+  name: string;
+  description?: string;
+  projectLink?: string;
+  githubLink?: string;
+  tags: string[];
+  skills: string[];
+  files: string[]; // Array of S3 file paths
+  projectPicture?: string; // S3 path to project picture
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface JobApp{

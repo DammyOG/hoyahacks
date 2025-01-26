@@ -11,7 +11,6 @@ async function testConnection() {
     const testUser: Partial<User> = {
       name: "Test User",
       email: "test@example.com",
-      password: "password123",
       skills: ["JavaScript", "TypeScript", "MongoDB"],
       createdAt: new Date(),
       updatedAt: new Date()
