@@ -3,8 +3,10 @@ import React from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useToast } from "@/hooks/use-toast";
 
 const Profile = () => {
+    const { toast } = useToast();
     const router = useRouter();
     const [isOpen, setIsOpen] = React.useState(false);
     const [name, setName] = React.useState("");
@@ -23,7 +25,11 @@ const Profile = () => {
         localStorage.removeItem("userSession");
         // Dispatch event before navigation
         window.dispatchEvent(new Event("sessionUpdate"));
+
         await router.push("/auth");
+        toast({
+            "title": "Sign out successful",
+        });
     };
 
     return (
