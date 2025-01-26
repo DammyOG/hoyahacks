@@ -4,8 +4,13 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Amplify } from "aws-amplify";
 import awsConfig from "@/lib/aws-exports";
-
 import TopNavbar from "@/components/topNavbar";
+
+// Configure Amplify once at the root level
+console.log("🔄 Configuring Amplify...");
+Amplify.configure(awsConfig);
+console.log("✅ Amplify configured");
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -15,9 +20,6 @@ const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
 });
-
-// Configure Amplify once at the root
-Amplify.configure(awsConfig as any);
 
 export const metadata: Metadata = {
   title: "Funnels",

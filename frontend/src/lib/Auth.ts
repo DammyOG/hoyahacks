@@ -1,9 +1,26 @@
-import { signUp as awsSignUp, signIn as awsSignIn } from 'aws-amplify/auth';
+import { Amplify } from 'aws-amplify';
+import awsConfig from "./aws-exports";
+import { signUp as awsSignUp, signIn as awsSignIn, getCurrentUser as getCurrentAuthenticatedUser, signOut } from 'aws-amplify/auth';
+
+// Ensure Amplify is configured
+Amplify.configure(awsConfig);
 
 export type SignInParameters = {
    email:string;
    password:string;
 };
+
+export type UserSession = {
+  name: string;
+  email: string;
+};
+
+export function setUserSession(userData: UserSession) {
+  localStorage.setItem("userSession", JSON.stringify(userData));
+  // Dispatch custom event
+  window.dispatchEvent(new Event('sessionUpdate'));
+}
+
 export async function signIn({email, password}: SignInParameters){
    try{
       console.log("Attempting signin with email:", email);
@@ -14,9 +31,24 @@ export async function signIn({email, password}: SignInParameters){
          options: {
             authFlowType: "USER_SRP_AUTH"
          }
-      })
+      });
 
-      console.log("Signin result:", result);
+      // After successful login, fetch and store user data
+      try {
+         const response = await fetch(`http://localhost:5000/api/users/${email}`);
+         if (response.ok) {
+            const userData = await response.json();
+            // Only store name and email
+            setUserSession({
+               name: userData.name,
+               email: userData.email
+            });
+            console.log("🟢 User data stored:", userData.name);
+         }
+      } catch (error) {
+         console.error("Error fetching user data:", error);
+      }
+
       return result;
    } catch (error: any) {
       console.error('Error signing in:', error);
@@ -88,5 +120,34 @@ export async function signUp({
   } catch (error: any) {
     console.error('Error details:', error);
     throw error;
+  }
+}
+
+export async function getCurrentUser() {
+  try {
+    const { username } = await getCurrentAuthenticatedUser();
+    const response = await fetch(`http://localhost:5000/api/users/${username}`);
+    if (!response.ok) {
+      throw new Error('Failed to fetch user data');
+    }
+    return await response.json();
+  } catch (error) {
+    console.error('Error getting current user:', error);
+    throw error;
+  }
+}
+
+export async function handleSignOut() {
+  try {
+    // Make sure we're using the configured instance
+    await signOut({ global: true });
+    localStorage.removeItem("userSession");
+    console.log("🔵 User signed out");
+    return true;
+  } catch (error) {
+    console.error("Error signing out:", error);
+    // Even if Cognito fails, clear local session
+    localStorage.removeItem("userSession");
+    return true; // Return true anyway to ensure redirect
   }
 }

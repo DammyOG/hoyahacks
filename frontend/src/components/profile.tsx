@@ -1,39 +1,63 @@
 "use client";
 import React from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useRouter } from "next/navigation";
 
 const Profile = () => {
-    const [isOpen, setIsOpen] = React.useState(false);
+  const router = useRouter();
+  const [isOpen, setIsOpen] = React.useState(false);
+  const [name, setName] = React.useState("");
+  const [email, setEmail] = React.useState("");
 
-    const handleMouseEnter = () => setIsOpen(true); // Open dropdown on hover
-    const handleMouseLeave = () => setIsOpen(false); // Close dropdown when not interacting
+  React.useEffect(() => {
+    const data = localStorage.getItem("userSession");
+    if (data) {
+      const { name, email } = JSON.parse(data);
+      setName(name);
+      setEmail(email);
+    }
+  }, []);
 
-    return (
-        <div className="">
-            {/* Avatar */}
-            <Avatar
-                onMouseEnter={handleMouseEnter}
-                onClick={() => setIsOpen((prev) => !prev)}
-                className="cursor-pointer"
-            >
-                <AvatarImage src="https://github.com/shadcn.png" />
-                <AvatarFallback>CN</AvatarFallback>
-            </Avatar>
+  const handleSignOut = async () => {
+    localStorage.removeItem("userSession");
+    // Dispatch event before navigation
+    window.dispatchEvent(new Event("sessionUpdate"));
+    await router.push("/auth");
+  };
 
-            {/* Dropdown */}
-            {isOpen && (
-                <div
-                    className="absolute top-full right-1 bg-white/90 text-black rounded-lg  shadow-md p-2 w-36 text-sm"
-                    onMouseEnter={handleMouseEnter} // Keep dropdown open when hovered
-                    onMouseLeave={handleMouseLeave} // Close dropdown when not hovered
-                >
-                    <div className="py-2 px-4 hover:bg-gray-200 cursor-pointer">Name</div>
-                    <div className="py-2 px-4 hover:bg-gray-200 cursor-pointer">Email</div>
-                    <div className="py-2 px-4 hover:bg-gray-200 cursor-pointer">Settings</div>
-                </div>
-            )}
+  return (
+    <div className="">
+      <Avatar
+        onMouseEnter={() => setIsOpen(true)}
+        onClick={() => setIsOpen((prev) => !prev)}
+        className="cursor-pointer"
+      >
+        <AvatarImage src="https://github.com/shadcn.png" />
+        <AvatarFallback>CN</AvatarFallback>
+      </Avatar>
+
+      {isOpen && (
+        <div
+          className="absolute top-full right-1 bg-white/90 text-black rounded-lg shadow-md p-2 w-36 text-sm"
+          onMouseEnter={() => setIsOpen(true)}
+          onMouseLeave={() => setIsOpen(false)}
+        >
+          <div className="py-2 px-4 hover:bg-gray-200 cursor-pointer">
+            {name}
+          </div>
+          <div className="py-2 px-4 hover:bg-gray-200 cursor-pointer">
+            {email}
+          </div>
+          <div
+            className="py-2 px-4 hover:bg-gray-200 cursor-pointer text-red-600"
+            onClick={handleSignOut}
+          >
+            Sign out
+          </div>
         </div>
-    );
+      )}
+    </div>
+  );
 };
 
 export default Profile;

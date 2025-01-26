@@ -1,4 +1,3 @@
-// ✅ This is the typical shape Amplify expects:
 const awsConfig = {
   Auth: {
     Cognito: {
