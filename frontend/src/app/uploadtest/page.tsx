@@ -27,6 +27,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useFieldArray, useForm } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { CardHeader, CardTitle } from "@/components/ui/card";
 
 interface UploadResponse {
   message: string;

@@ -1,5 +1,6 @@
 import React from 'react'
 import { Button } from './ui/button'
+import Link from 'next/link'
 
 const HeroComp = () => {
     return (
@@ -8,7 +9,9 @@ const HeroComp = () => {
             <p>Submit your Hoya hack
                 projects with mini-tutorials to
                 help inspire and teach future learners!</p>
-            <Button variant={"main"}>Make Submission</Button>
+            <Link href='/uploadtest'>
+                <Button variant={"main"}>Make Submission</Button>
+            </Link>
         </div>
     )
 }
