@@ -30,6 +30,34 @@ export type SignUpParameters = {
   password: string;
 };
 
+// Add MongoDB user creation function
+async function createMongoUser(userData: SignUpParameters) {
+  try {
+    const response = await fetch('http://localhost:5000/api/users', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        name: `${userData.firstName} ${userData.lastName}`,
+        email: userData.email,
+        skills: [],
+        createdAt: new Date(),
+        updatedAt: new Date()
+      })
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to create user in MongoDB');
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error('Error creating MongoDB user:', error);
+    throw error;
+  }
+}
+
 export async function signUp({
   firstName,
   lastName,
@@ -37,7 +65,7 @@ export async function signUp({
   password
 }: SignUpParameters) {
   try {
-    console.log("Attempting signup with:", { email, firstName, lastName,password});
+    console.log("Attempting signup with:", { email, firstName, lastName });
     
     const result = await awsSignUp({
       username: email,
@@ -52,14 +80,13 @@ export async function signUp({
       }
     });
     
+    // After successful Cognito signup, create MongoDB user
+    await createMongoUser({ firstName, lastName, email, password });
+    
     console.log("Signup result:", result);
     return result;
   } catch (error: any) {
-    console.error('Error details:', {
-      name: error.name,
-      message: error.message,
-      code: error.code
-    });
+    console.error('Error details:', error);
     throw error;
   }
 }
