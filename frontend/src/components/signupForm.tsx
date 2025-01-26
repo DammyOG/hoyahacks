@@ -85,7 +85,7 @@ const SignupForm: React.FC<SignupFormProps> = ({
       if (handleClick.length > 0) {
         const result = await handleClick(signUpData);
         console.log("Signup successful");
-        router.push("/auth");
+        router.push("/auth?form=sign-in");
       }
     } catch (error: any) {
       console.error("Signup failed:", error);
