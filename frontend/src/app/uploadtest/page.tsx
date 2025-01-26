@@ -1,26 +1,9 @@
 "use client";
-import { useState } from "react";
+import React, { useRef, useState } from "react";
 import { z } from "zod";
 import { Tags, Skills } from "@/app/models/models";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
-
-interface UploadResponse {
-    message: string;
-    urls?: string[]; // We'll store all uploaded files' URLs here
-    error?: string;
-}
-
-const uploadSchema = z.object({
-    files: z.array(z.instanceof(File)),
-    projectname: z.string(),
-    projectdescription: z.string(),
-    projectlink: z.string(),
-    githublink: z.string(),
-    projecttags: z.array(z.string()),
-    skills: z.array(z.string()),
-    // estimatedtime: z.string(),
-});
 
 import {
     Form,
@@ -35,6 +18,27 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+
+interface UploadResponse {
+    message: string;
+    urls?: string[]; // We'll store all uploaded files' URLs here
+    error?: string;
+}
+
+const uploadSchema = z.object({
+    files: z.array(
+        z.object({
+            file: z.instanceof(File)
+        })
+    ),
+    projectname: z.string().min(3, { message: "Project name must be at least 3 characters long" }),
+    projectdescription: z.string().optional(),
+    projectlink: z.string().optional(),
+    githublink: z.string().optional(),
+    projecttags: z.array(z.string()).optional(),
+    skills: z.array(z.string()).optional(),
+    // estimatedtime: z.string(),
+});
 
 
 export default function Upload() {
@@ -52,12 +56,14 @@ export default function Upload() {
     });
 
 
+
+    const hiddenFileInput = useRef<HTMLInputElement | null>(null); // Hidden file input reference
     const handleRemoveTag = (tag: string) => {
-        form.setValue("projecttags", form.getValues().projecttags.filter(t => t !== tag));
+        form.setValue("projecttags", (form.getValues().projecttags || []).filter(t => t !== tag));
     }
 
     const handleRemoveSkill = (skill: string) => {
-        form.setValue("skills", form.getValues().skills.filter(s => s !== skill));
+        form.setValue("skills", (form.getValues().skills || []).filter(s => s !== skill));
     }
 
 
@@ -69,18 +75,20 @@ export default function Upload() {
     const tagsOptions = Object.values(Tags).map(tag => tag.toString());
     const skillsOptions = Object.values(Skills).map(skill => skill.toString());
 
-    const watchedTags = form.watch("projecttags");
-    const watchedSkills = form.watch("skills");
-
+    const watchedTags = form.watch("projecttags") || [];
+    const watchedSkills = form.watch("skills") || [];
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files) {
+            const filesArray = Array.from(e.target.files);
             setFiles(e.target.files);
+            form.setValue("files", filesArray.map(file => ({ file, id: crypto.randomUUID() }))); // Explicitly set files in the form
         }
     };
 
-    const handleUpload = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
+    const handleUpload = async (fileData: z.infer<typeof uploadSchema>) => {
+        console.log("fileData", fileData);
+
         if (!files) return;
 
         setUploading(true);
@@ -89,27 +97,25 @@ export default function Upload() {
             const formData = new FormData();
             const formValues = form.getValues();
 
-
             formData.append("projectname", formValues.projectname);
-            formData.append("projectdescription", formValues.projectdescription);
-            formData.append("projectlink", formValues.projectlink);
-            formData.append("githublink", formValues.githublink);
+            formData.append("projectdescription", formValues.projectdescription || "");
+            formData.append("projectlink", formValues.projectlink || "");
+            formData.append("githublink", formValues.githublink || "");
             formData.append("projecttags", JSON.stringify(formValues.projecttags));
             formData.append("skills", JSON.stringify(formValues.skills));
+
+            // fileData.files.forEach((file: any) => {
+            //     formData.append("files", file.file); // file.file contains the actual File object
+            // });
 
 
             // Append each file to the form data. The 3rd param sets the filename (including any subfolders).
             // "files" will be the field name we use in `upload.array("files")` on the server
             for (let i = 0; i < files.length; i++) {
                 const file = files[i];
+
                 formData.append("files", file, file.webkitRelativePath);
             }
-
-            // iterate and log formdata
-            for (var pair of formData.entries()) {
-                console.log(pair[0] + ', ' + pair[1]);
-            }
-
 
             const response = await fetch("http://localhost:5000/upload", {
                 method: "POST",
@@ -117,7 +123,7 @@ export default function Upload() {
             });
 
             const data: UploadResponse = await response.json();
-            console.log("data", data);
+            console.log("Upload response", data);
             if (data.urls && data.urls.length > 0) {
                 setUploadedUrls(data.urls);
             }
@@ -133,20 +139,26 @@ export default function Upload() {
         <div className="flex flex-col items-center justify-center min-h-screen text-black bg-gray-100">
             <Form {...form}>
                 <form
-                    onSubmit={handleUpload}
-                    className="p-6 bg-white rounded-lg shadow-md space-y-6 w-3/4"
+                    onSubmit={(e) => {
+                        e.preventDefault();
+                        console.log("Errors:", form.formState.errors); // Check validation errors
+                        form.handleSubmit(handleUpload)(e); // Call handleUpload only if validation passes
+                    }}
+                    className="p-6 bg-white rounded-lg shadow-md space-y-6 w-3/4 flex flex-col "
                 >
                     {/**
          * key attributes:
          *   multiple
-         *   webkitdirectory
+         *   webkitdirectory 
          */}
+
+
                     <FormField
                         control={form.control}
                         name="projectname"
                         render={({ field }) => (
                             <FormItem className="space-y-2">
-                                <FormLabel className="text-black">Projectname</FormLabel>
+                                <FormLabel className="text-black">Project Name</FormLabel>
                                 <FormControl>
                                     <Input
                                         placeholder="Enter project name"
@@ -188,8 +200,6 @@ export default function Upload() {
                             </FormItem>
                         )}
                     />
-
-
 
                     <FormField
                         control={form.control}
@@ -269,8 +279,8 @@ export default function Upload() {
                                 <FormControl>
                                     <Select
                                         onValueChange={(value) => {
-                                            if (!field.value.includes(value)) {
-                                                field.onChange([...field.value, value]); // Append new skill
+                                            if (!(field.value ?? []).includes(value)) {
+                                                field.onChange([...(field.value || []), value]); // Append new skill
                                             }
                                         }}
                                     >
@@ -296,7 +306,7 @@ export default function Upload() {
 
                     <div className="mt-2 flex flex-wrap gap-2">
                         {watchedSkills.map((skills) => (
-                            <Badge key={skills} className="px-2 py-1 text-sm bg-blue-100 text-blue-600">
+                            <Badge key={skills} className="px-2 py-1 text-sm bg-blue-100 text-blue-600 " >
                                 {skills}{" "}
                                 <Button
                                     variant="ghost"
@@ -318,8 +328,8 @@ export default function Upload() {
                                 <FormControl>
                                     <Select
                                         onValueChange={(value) => {
-                                            if (!field.value.includes(value)) {
-                                                field.onChange([...field.value, value]); // Append new skill
+                                            if (!(field.value ?? []).includes(value)) {
+                                                field.onChange([...(field.value || []), value]); // Append new skill
                                             }
                                         }}
                                     >
@@ -344,22 +354,34 @@ export default function Upload() {
                     />
 
 
-                    <input
-                        type="file"
-                        multiple
-                        // @ts-ignore - TS doesn't know about the webkitdirectory attribute,
-                        // but it's widely supported in modern browsers (Chrome, Edge, Safari).
-                        webkitdirectory="true"
-                        onChange={handleFileChange}
-                        className="mb-4"
+                    <FormField
+                        name="files"
+                        control={form.control}
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Upload Files</FormLabel>
+                                <FormControl>
+                                    <input
+                                        type="file"
+                                        multiple
+                                        // @ts-ignore - TS doesn't know about the webkitdirectory attribute,
+                                        webkitdirectory="true"
+                                        onChange={handleFileChange}
+                                        className="block w-full border border-gray-300 rounded-lg"
+                                    />
+
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
                     />
-                    <button
+                    <Button
                         type="submit"
                         disabled={!files || uploading}
-                        className="px-4 py-2 bg-blue-500 text-black rounded disabled:bg-gray-400"
+                        className="px-4 py-2 bg-blue-500 text-black rounded-xl disabled:bg-gray-400 w-28"
                     >
-                        {uploading ? "Uploading..." : "Upload Folder"}
-                    </button>
+                        {uploading ? "Uploading..." : "Submit"}
+                    </Button>
                 </form>
 
                 {uploadedUrls.length > 0 && (
