@@ -26,6 +26,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useFieldArray, useForm } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { CardHeader, CardTitle } from "@/components/ui/card";
 
 interface UploadResponse {
     message: string;
@@ -148,6 +149,7 @@ export default function Upload() {
 
     return (
         <div className="flex flex-col items-center justify-center min-h-screen text-black bg-gray-100">
+
             <Form {...form}>
                 <form
                     onSubmit={(e) => {
@@ -162,6 +164,7 @@ export default function Upload() {
              *   multiple
              *   webkitdirectory 
              */}
+                    <CardHeader className="self-center text-2xl font-bold">Upload your project</CardHeader>
                     <FormField
                         control={form.control}
                         name="projectname"

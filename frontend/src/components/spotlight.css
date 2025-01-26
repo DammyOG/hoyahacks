@@ -1,0 +1,15 @@
+/* global.css or a custom CSS file */
+.hide-scrollbar::-webkit-scrollbar {
+    display: none; /* Hide the default scrollbar */
+  }
+  
+  .hide-scrollbar {
+    -ms-overflow-style: none; /* For Internet Explorer */
+    scrollbar-width: none; /* For Firefox */
+  }
+  
+  /* Optional: Smooth scrolling */
+  .hide-scrollbar {
+    scroll-behavior: smooth;
+  }
+  

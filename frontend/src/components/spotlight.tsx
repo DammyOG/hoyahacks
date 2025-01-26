@@ -1,37 +1,36 @@
 import React from 'react'
-import HomeCard from './homeCard'
-import { CardTitle } from './ui/card'
+import SpotlightCreator from './spotlightcreator'
 
 const Spotlight = () => {
-    return (
-        <div className='w-full xl:w-3/5 flex flex-col gap-4 ml-4 text-white'>
-            <div className='space-y-4'>
-                <CardTitle> Spotlight</CardTitle>
-                <div className='flex gap-3 oveflow-x-auto'>
-                    <HomeCard title='King' content='Hola' img='/images/icon.png' />
-                    <HomeCard title='King' content='Hola' img='/images/icon.png' />
-                    <HomeCard title='King' content='Hola' img='/images/image.png' />
-                </div>
-            </div>
-            <div className='space-y-4'>
-                <CardTitle>Mobile App Development</CardTitle>
-                <div className='flex gap-3'>
-                    <HomeCard title='King' content='Hola' img='/images/icon.png' />
-                    <HomeCard title='King' content='Hola' img='/images/icon.png' />
-                    <HomeCard title='King' content='Hola' img='/images/image.png' />
-                </div>
-            </div>
-            <div className='space-y-4 '>
-                <CardTitle> Web Development</CardTitle>
-                <div className='flex gap-3'>
-                    <HomeCard title='King' content='Hola' img='/images/icon.png' />
-                    <HomeCard title='King' content='Hola' img='/images/icon.png' />
-                    <HomeCard title='King' content='Hola' img='/images/image.png' />
-                </div>
-            </div>
-        </div >
-        //  Add your props here
+    const categories = [
+        {
+            title: 'Spotlight',
+            cards: [
+                { title: 'King', content: 'Hola', img: '/images/icon.png' },
+                { title: 'Queen', content: 'Hello', img: '/images/image.png' },
+                { title: 'Prince', content: 'Hi', img: '/images/icon.png' },
+                { title: 'Princess', content: 'Hey', img: '/images/image.png' },
+            ],
+        },
+        {
+            title: 'Mobile App Development',
+            cards: [
+                { title: 'App1', content: 'Mobile Dev', img: '/images/icon.png' },
+                { title: 'App2', content: 'Mobile Dev', img: '/images/image.png' },
+                { title: 'App3', content: 'Mobile Dev', img: '/images/icon.png' },
+            ],
+        },
+        {
+            title: 'Web Development',
+            cards: [
+                { title: 'Web1', content: 'Web Dev', img: '/images/image.png' },
+                { title: 'Web2', content: 'Web Dev', img: '/images/icon.png' },
+            ],
+        },
+    ]
 
+    return (
+        <SpotlightCreator categories={categories} />
     )
 }
 
