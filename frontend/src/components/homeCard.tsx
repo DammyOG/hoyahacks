@@ -33,7 +33,7 @@ const HomeCard = ({ title, content, img }: HomeCardProps) => {
                     <p>{content}</p>
                 </CardContent>
 
-                <HeartIcon />
+                <HeartIcon />+
             </Card>
 
         </>
