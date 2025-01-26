@@ -31,7 +31,7 @@ const HomeCard = ({ title, content, img }: HomeCardProps) => {
 
                 <div className='absolute flex flex-col items-center justify-center h-32 inset-x-0 bottom-0 backdrop-blur-md bg-white/30 rounded-bl-lg rounded-br-lg '>
                     <CardTitle className='font-semibold'>{title}</CardTitle>
-                    <CardContent className=' pt-3'>
+                    <CardContent className='pt-3'>
                         <p>{content}</p>
                     </CardContent>
                     {/* <HeartIcon /> */}
