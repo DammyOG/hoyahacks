@@ -22,20 +22,23 @@ interface HomeCardProps {
 
 const HomeCard = ({ title, content, img }: HomeCardProps) => {
     return (
-        // Design your card here
-        <>
-            <Card className='relative min-w-[15rem] w-[15rem] h-[16rem] bg-gradient-to-t from-[#0000c5] to-[#150040] gap-4 flex flex-col text-white'>
-                <div className='bg-transparent h-3/5'>
-                    <img src={img} alt="" />
+        // Design your card here       
+        <div className='stroke-white stroke-2'>
+            <Card className='relative min-w-[14rem] w-[16rem] h-[16rem] bg-center gap-4 flex flex-col text-white'
+                style={{
+                    backgroundImage: `url(${img})`,
+                }}>
+
+                <div className='absolute flex flex-col items-center justify-center h-32 inset-x-0 bottom-0 backdrop-blur-md bg-white/30 rounded-bl-lg rounded-br-lg '>
+                    <CardTitle className='font-semibold'>{title}</CardTitle>
+                    <CardContent className=' pt-3'>
+                        <p>{content}</p>
+                    </CardContent>
+                    {/* <HeartIcon /> */}
                 </div>
-                <CardTitle className='pl-2'>{title}</CardTitle>
-                <CardContent className='p-0 pl-2'>
-                    <p>{content}</p>
-                </CardContent>
-                <HeartIcon />
             </Card>
 
-        </>
+        </div>
 
         //img
 
