@@ -185,7 +185,7 @@ export default function Upload() {
             toast({
                 title: "Project uploaded successfully!",
             })
-            router.push("/");
+            router.push("/projects");
         } catch (error) {
             console.error("Upload failed:", error);
         } finally {
