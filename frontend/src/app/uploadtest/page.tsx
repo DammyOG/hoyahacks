@@ -28,6 +28,7 @@ import { useFieldArray, useForm } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { CardHeader, CardTitle } from "@/components/ui/card";
+import { useRouter } from "next/navigation";
 
 interface UploadResponse {
   message: string;
@@ -129,17 +130,32 @@ export default function Upload() {
     }
   };
 
+  const router = useRouter();
+
   const handleUpload = async (data: any) => {
-    if (!files || !session?.email) return;
+    // Check for session first
+    const storedSession = localStorage.getItem("userSession");
+    if (!storedSession) {
+      console.error("No session found");
+      return;
+    }
+
+    // Check for files
+    if (!files || files.length === 0) {
+      console.error("No files selected");
+      return;
+    }
+
     setUploading(true);
 
     try {
+      const sessionData = JSON.parse(storedSession);
+
       // Upload files to S3 and collect their paths
       const uploadedFilePaths = [];
       for (let i = 0; i < files.length; i++) {
         const file = files[i];
-        const res = await uploadFile(file, session.email);
-        console.log(`✅ Uploaded ${file.name} to S3:`, res);
+        const res = await uploadFile(file, sessionData.email);
         if (res.filePath) {
           uploadedFilePaths.push(res.filePath);
         }
@@ -147,7 +163,7 @@ export default function Upload() {
 
       // Create project with file paths
       const projectData = {
-        email: session.email,
+        email: sessionData.email,
         projectname: data.projectname,
         projectdescription: data.projectdescription || "",
         projectlink: data.projectlink || "",
@@ -158,22 +174,23 @@ export default function Upload() {
         projectPicture: projectPicturePath,
       };
 
-      // Send session in headers
       const response = await fetch("http://localhost:5000/api/users/projects", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: localStorage.getItem("userSession") || "",
+          Authorization: storedSession,
         },
         body: JSON.stringify(projectData),
       });
 
-      const result = await response.json();
-      console.log("Project creation result:", result);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
 
+      const result = await response.json();
       if (result.success) {
-        // Handle success (e.g., show success message, redirect)
         setUploadedUrls(uploadedFilePaths);
+        router.push("/projects");
       }
     } catch (error) {
       console.error("Upload failed:", error);
@@ -424,8 +441,8 @@ export default function Upload() {
               />
               <Button
                 type="submit"
-                disabled={!files || uploading}
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white disabled:bg-gray-600"
+                disabled={uploading || !form.formState.isValid}
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white disabled:bg-gray-600 disabled:cursor-not-allowed"
               >
                 {uploading ? "Uploading..." : "Submit"}
               </Button>
