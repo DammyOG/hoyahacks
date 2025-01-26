@@ -5,6 +5,7 @@ import "./globals.css";
 import { Amplify } from "aws-amplify";
 import awsConfig from "@/lib/aws-exports";
 import TopNavbar from "@/components/topNavbar";
+import { SessionProvider } from "@/components/providers/session";
 
 // Configure Amplify once at the root level
 console.log("🔄 Configuring Amplify...");
@@ -36,8 +37,10 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased flex`}
       >
-        <TopNavbar />
-        <section className="mt-16 w-full">{children}</section>
+        <SessionProvider>
+          <TopNavbar />
+          <section className="mt-16 w-full">{children}</section>
+        </SessionProvider>
       </body>
     </html>
   );

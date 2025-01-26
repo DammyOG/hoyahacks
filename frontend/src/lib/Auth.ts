@@ -74,6 +74,7 @@ async function createMongoUser(userData: SignUpParameters) {
         name: `${userData.firstName} ${userData.lastName}`,
         email: userData.email,
         skills: [],
+        s3FolderPath: `users/${userData.email}/`,
         createdAt: new Date(),
         updatedAt: new Date()
       })
@@ -86,6 +87,30 @@ async function createMongoUser(userData: SignUpParameters) {
     return await response.json();
   } catch (error) {
     console.error('Error creating MongoDB user:', error);
+    throw error;
+  }
+}
+
+// Add this new function after the createMongoUser function
+async function createUserS3Folder(email: string) {
+  try {
+    const response = await fetch('http://localhost:5000/api/users/create-folder', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email: email
+      })
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to create user S3 folder');
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error('Error creating user S3 folder:', error);
     throw error;
   }
 }
@@ -112,8 +137,16 @@ export async function signUp({
       }
     });
     
-    // After successful Cognito signup, create MongoDB user
-    await createMongoUser({ firstName, lastName, email, password });
+    // Create S3 folder and get the path
+    const { s3Path } = await createUserS3Folder(email);
+    
+    // After successful Cognito signup, create MongoDB user with S3 path
+    await createMongoUser({ 
+      firstName, 
+      lastName, 
+      email, 
+      password 
+    });
     
     console.log("Signup result:", result);
     return result;
@@ -149,5 +182,26 @@ export async function handleSignOut() {
     // Even if Cognito fails, clear local session
     localStorage.removeItem("userSession");
     return true; // Return true anyway to ensure redirect
+  }
+}
+
+export async function uploadFile(file: File, email: string) {
+  try {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    const response = await fetch(`http://localhost:5000/api/users/upload/${email}`, {
+      method: 'POST',
+      body: formData,
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to upload file');
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error('Error uploading file:', error);
+    throw error;
   }
 }
