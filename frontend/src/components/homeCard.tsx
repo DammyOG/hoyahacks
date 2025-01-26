@@ -24,7 +24,7 @@ const HomeCard = ({ title, content, img }: HomeCardProps) => {
     return (
         // Design your card here
         <>
-            <Card className='relative w-[16rem] h-[16rem] bg-gradient-to-t from-[#0000c5] to-[#150040] gap-4 flex flex-col text-white'>
+            <Card className='relative min-w-[14rem] w-[16rem] h-[16rem] bg-gradient-to-t from-[#0000c5] to-[#150040] gap-4 flex flex-col text-white'>
                 <div className='bg-transparent h-3/5'>
                     <img src={img} alt="" />
                 </div>
@@ -32,8 +32,7 @@ const HomeCard = ({ title, content, img }: HomeCardProps) => {
                 <CardContent className='p-0 pl-2'>
                     <p>{content}</p>
                 </CardContent>
-
-                <HeartIcon />+
+                <HeartIcon />
             </Card>
 
         </>

@@ -26,7 +26,7 @@ export default function Home() {
     <div className="min-h-screen bg-slate-900 w-full">
       <Sidebar />
       {/* Main content area - notice the margin-left matches sidebar width */}
-      <main className="ml-12 transition-all duration-300">
+      <main className="ml-16 transition-all duration-300 ">
         {renderContent()}
       </main>
     </div>
@@ -38,7 +38,7 @@ const HomeContent = () => {
   return (
     <>
       <HeroComp />
-      <div className="p-8 flex justify-center">
+      <div className="pt-8 flex justify-center">
         <Spotlight />
         <TrendDiscussions />
       </div>
