@@ -2,6 +2,7 @@ import { Amplify } from 'aws-amplify';
 import awsConfig from "./aws-exports";
 import { signUp as awsSignUp, signIn as awsSignIn, getCurrentUser as getCurrentAuthenticatedUser, signOut } from 'aws-amplify/auth';
 
+
 // Ensure Amplify is configured
 Amplify.configure(awsConfig);
 
@@ -22,6 +23,7 @@ export function setUserSession(userData: UserSession) {
 }
 
 export async function signIn({email, password}: SignInParameters){
+
    try{
       console.log("Attempting signin with email:", email);
 
@@ -49,6 +51,7 @@ export async function signIn({email, password}: SignInParameters){
          console.error("Error fetching user data:", error);
       }
 
+      
       return result;
    } catch (error: any) {
       console.error('Error signing in:', error);

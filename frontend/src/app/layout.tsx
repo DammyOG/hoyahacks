@@ -6,6 +6,7 @@ import { Amplify } from "aws-amplify";
 import awsConfig from "@/lib/aws-exports";
 import TopNavbar from "@/components/topNavbar";
 import { SessionProvider } from "@/components/providers/session";
+import { Toaster } from "@/components/ui/toaster";
 
 // Configure Amplify once at the root level
 console.log("🔄 Configuring Amplify...");
@@ -39,7 +40,9 @@ export default function RootLayout({
             >
                 <SessionProvider>
                     <TopNavbar />
-                    <section className="mt-16 w-full">{children}</section>
+                    <section className="mt-16 w-full">{children}
+                        <Toaster />
+                    </section>
                 </SessionProvider>
             </body>
         </html>
